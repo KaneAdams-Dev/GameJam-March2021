@@ -13,10 +13,10 @@ public class PlayerMovementScript : MonoBehaviour {
 	public float mouseSensitivity = 3.5f;
 
 	[SerializeField] [Range(0.0f, 0.5f)] float mouseSmoothTime = 0.1f;
-	
+
 	Vector2 currentMouseDelta = Vector2.zero;
 	Vector2 currentMouseDeltaVelocity = Vector2.zero;
-	
+
 	[SerializeField]
 	Transform playerCamera;
 
@@ -24,13 +24,13 @@ public class PlayerMovementScript : MonoBehaviour {
 	private float speed;
 	public float defaultSpeed = 5.0f;
 	public float runSpeed = 15.0f;
-	
+
 	private float gravity = -9.81f;
 	private float velocityY = 0.0f;
 	public float jumpHeight = 100.0f;
-	
+
 	[SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
-	
+
 	Vector2 currentDir = Vector2.zero;
 	Vector2 currentDirVelocity = Vector2.zero;
 
