@@ -53,6 +53,9 @@ public class PlayerMovementScript : MonoBehaviour {
 		UpdatePlayerMovement();
 	}
 
+	/// <summary>
+	/// Changes where the player looks depending on where mouse is
+	/// </summary>
 	void UpdateMouseLook() {
 		Vector2 targetMouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
@@ -65,6 +68,9 @@ public class PlayerMovementScript : MonoBehaviour {
 		transform.Rotate(Vector3.up * currentMouseDelta.x * mouseSensitivity);
 	}
 
+	/// <summary>
+	/// Changes where the player is in the game world
+	/// </summary>
 	void UpdatePlayerMovement() {
 		Vector2 targetDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 		targetDir.Normalize();
