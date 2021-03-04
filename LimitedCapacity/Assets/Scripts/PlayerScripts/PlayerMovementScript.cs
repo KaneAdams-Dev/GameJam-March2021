@@ -1,79 +1,96 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Controls movement of Player GameObject using 'QWERTY' keyboard
+/// Controls where Player's camera looks for mouse
 /// </summary>
 public class PlayerMovementScript : MonoBehaviour {
-	// Physics variables to control movement
-	// Private
-	private bool isGrounded = true; // Can the player jump again?
+	CharacterController controller;
+
+	// Camera variables
+	private bool lockCursor = true;
+	private float cameraPitch = 0.0f;
+	public float mouseSensitivity = 3.5f;
+
+	[SerializeField] [Range(0.0f, 0.5f)] float mouseSmoothTime = 0.1f;
+	
+	Vector2 currentMouseDelta = Vector2.zero;
+	Vector2 currentMouseDeltaVelocity = Vector2.zero;
+	
+	[SerializeField]
+	Transform playerCamera;
+
+	// Physics variables
 	private float speed;
-	// Public
 	public float defaultSpeed = 5.0f;
 	public float runSpeed = 15.0f;
-	public float jumpHeight = 10.0f;
-
-	public Rigidbody rigidBody;
+	
+	private float gravity = -9.81f;
+	private float velocityY = 0.0f;
+	public float jumpHeight = 100.0f;
+	
+	[SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
+	
+	Vector2 currentDir = Vector2.zero;
+	Vector2 currentDirVelocity = Vector2.zero;
 
 	/// <summary>
 	/// Assign variables to defaults
 	/// </summary>
 	void Start() {
-		rigidBody = gameObject.GetComponent<Rigidbody>();
+		controller = GetComponent<CharacterController>();
 		speed = defaultSpeed;
+
+		if (lockCursor) {
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
 	}
 
 	// Update is called once per frame
 	void Update() {
-		PlayerMovement();
+		UpdateMouseLook();
+		UpdatePlayerMovement();
 	}
 
-	/// <summary>
-	/// When the Player comes in contact with the Floor GameObject, jump is reset
-	/// Checks whether the player can jump
-	/// </summary>
-	/// <param name="collision">The GameObject that has bee triggered by the Player GameObject</param>
-	private void OnCollisionEnter(Collision collision) {
-		if (collision.gameObject.tag == "Floor" && !isGrounded) {
-			isGrounded = true;
-		}
+	void UpdateMouseLook() {
+		Vector2 targetMouseDelta = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+		currentMouseDelta = Vector2.SmoothDamp(currentMouseDelta, targetMouseDelta, ref currentMouseDeltaVelocity, mouseSmoothTime);
+
+		cameraPitch -= currentMouseDelta.y * mouseSensitivity;
+		cameraPitch = Mathf.Clamp(cameraPitch, -90.0f, 90.0f);
+
+		playerCamera.localEulerAngles = Vector3.right * cameraPitch;
+		transform.Rotate(Vector3.up * currentMouseDelta.x * mouseSensitivity);
 	}
 
-	private void PlayerMovement() {
-		// Sprint mechanic
-		// If the player is pressing the run button, then the speed increases, otherwise default speed
-		if (Input.GetKey(KeyCode.LeftShift)) {
-			speed = runSpeed;
-		} else {
-			speed = defaultSpeed;
-		}
+	void UpdatePlayerMovement() {
+		Vector2 targetDir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		targetDir.Normalize();
 
-		// Walking mechanics
-		// If the player is pressing a movement button, move in that direction
-		if (Input.GetKey(KeyCode.W))    // Forwards
-		{
-			rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, speed);
-		}
-		if (Input.GetKey(KeyCode.A))    // Left
-		{
-			rigidBody.velocity = new Vector3(-speed, rigidBody.velocity.y, rigidBody.velocity.z);
-		}
-		if (Input.GetKey(KeyCode.S))    // Backwards
-		{
-			rigidBody.velocity = new Vector3(rigidBody.velocity.x, rigidBody.velocity.y, -speed);
-		}
-		if (Input.GetKey(KeyCode.D))    // Right
-		{
-			rigidBody.velocity = new Vector3(speed, rigidBody.velocity.y, rigidBody.velocity.z);
-		}
+		currentDir = Vector2.SmoothDamp(currentDir, targetDir, ref currentDirVelocity, moveSmoothTime);
 
-		// Jump mechanic
-		// If the player is pressing the jump button and the player is touching the floor, then jump
-		if (Input.GetKey(KeyCode.Space) && isGrounded) {
-			rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpHeight, rigidBody.velocity.z);
-			isGrounded = false;
+		if (controller.isGrounded) {
+			//canJump = true;
+			if (Input.GetKey(KeyCode.Space)) {
+				velocityY += jumpHeight;
+			} else {
+				velocityY = 0.0f;
+			}
+
+			// Sprint mechanic
+			// If the player is pressing the run button, then the speed increases, otherwise default speed
+			if (Input.GetKey(KeyCode.LeftShift)) {
+				speed = runSpeed;
+			} else {
+				speed = defaultSpeed;
+			}
 		}
+		velocityY += gravity * Time.deltaTime;
+
+		Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * speed + Vector3.up * velocityY;
+
+		controller.Move(velocity * Time.deltaTime);
 	}
 }
