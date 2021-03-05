@@ -11,8 +11,11 @@ GameObject:
   - component: {fileID: 399591907054443089}
   - component: {fileID: 8705638433937612903}
   - component: {fileID: 3164954582985809054}
+  - component: {fileID: 230538749872364920}
+  - component: {fileID: 8715537094434217049}
+  - component: {fileID: 7097751137848683276}
   m_Layer: 0
-  m_Name: PowerUpBottle
+  m_Name: HealthBottle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,3 +80,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &230538749872364920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733760480902064194}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8268bf4a4ac6974ead502d30952a631, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+--- !u!65 &8715537094434217049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733760480902064194}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15149629, y: 0.1552847, z: 0.43725285}
+  m_Center: {x: -0.0000000037252903, y: 0, z: 0}
+--- !u!114 &7097751137848683276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3733760480902064194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fec9976f450d704e92e205d91b595bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

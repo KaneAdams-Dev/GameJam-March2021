@@ -6,6 +6,9 @@ using UnityEngine;
 /// Controls where Player's camera looks for mouse
 /// </summary>
 public class PlayerMovementScript : MonoBehaviour {
+	[SerializeField]
+	InventoryScript inventory;
+
 	CharacterController controller;
 
 	// Camera variables
@@ -28,6 +31,7 @@ public class PlayerMovementScript : MonoBehaviour {
 	public float runSpeed = 20.0f;
 	public float currentStamina;
 	public float maxStamina = 100f;
+	public float speedMultiplier = 1;
 
 	private float gravity = -9.81f;
 	private float velocityY = 0.0f;
@@ -109,7 +113,7 @@ public class PlayerMovementScript : MonoBehaviour {
 		}
 		velocityY += gravity * Time.deltaTime;
 
-		Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * speed + Vector3.up * velocityY;
+		Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * speed * speedMultiplier + Vector3.up * velocityY;
 
 		controller.Move(velocity * Time.deltaTime);
 	}

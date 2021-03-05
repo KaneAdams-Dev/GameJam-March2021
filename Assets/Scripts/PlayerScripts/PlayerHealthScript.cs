@@ -46,7 +46,7 @@ public class PlayerHealthScript : MonoBehaviour {
 	/// <summary>
 	/// Replenishes 10 health (or until at 100 health)
 	/// </summary>
-	void ReplenishHealth() {
+	public void ReplenishHealth() {
 		for (int i = 0; i < 10; i++) {
 			if (currentHealth == maxHealth) {
 				break;
