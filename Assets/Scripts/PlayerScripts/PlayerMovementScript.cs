@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Controls movement of Player GameObject using 'QWERTY' keyboard
@@ -127,6 +128,9 @@ public class PlayerMovementScript : MonoBehaviour {
 			healthScript.TakeDamage(15);
 			isStuck = true;
 			StartCoroutine(StuckInTrap());
+		}
+		if (other.tag == "Finish" && SceneManager.GetActiveScene().name == "MainGame") {
+			SceneManager.LoadScene("MainGameLevel2");
 		}
 	}
 

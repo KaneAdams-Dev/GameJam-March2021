@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9105024219100866598}
   m_Layer: 0
   m_Name: StaminaBottle
-  m_TagString: Untagged
+  m_TagString: StaminaPickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,3 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25e23df8f65f8af43ad81cb5a0f82d27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 0}
+  staminaBar: {fileID: 0}
