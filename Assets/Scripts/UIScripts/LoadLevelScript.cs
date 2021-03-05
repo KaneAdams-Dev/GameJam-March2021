@@ -18,4 +18,10 @@ public class LoadLevelScript : MonoBehaviour {
 		Application.Quit();
 	}
 
+	//void Update() {
+	//	if (Input.GetKeyDown(KeyCode.E)) {
+
+
+	//	}
+	//}
 }
