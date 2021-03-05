@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// Controls movement of Player GameObject using 'QWERTY' keyboard
@@ -21,18 +22,24 @@ public class PlayerMovementScript : MonoBehaviour {
 	Transform playerCamera;
 
 	// Physics variables
+	private bool isStuck = false;
 	private float speed;
-	public float defaultSpeed = 5.0f;
-	public float runSpeed = 15.0f;
+	public float defaultSpeed = 10.0f;
+	public float runSpeed = 20.0f;
+	public float currentStamina;
+	public float maxStamina = 100f;
 
 	private float gravity = -9.81f;
 	private float velocityY = 0.0f;
-	public float jumpHeight = 100.0f;
+	public float jumpHeight = 20.0f;
 
 	[SerializeField] [Range(0.0f, 0.5f)] float moveSmoothTime = 0.3f;
 
 	Vector2 currentDir = Vector2.zero;
 	Vector2 currentDirVelocity = Vector2.zero;
+
+	public BarScript staminaBar;
+	public PlayerHealthScript healthScript;
 
 	/// <summary>
 	/// Assign variables to defaults
@@ -40,6 +47,8 @@ public class PlayerMovementScript : MonoBehaviour {
 	void Start() {
 		controller = GetComponent<CharacterController>();
 		speed = defaultSpeed;
+		currentStamina = maxStamina;
+		staminaBar.SetMaxStamina(maxStamina);
 
 		if (lockCursor) {
 			Cursor.lockState = CursorLockMode.Locked;
@@ -50,7 +59,9 @@ public class PlayerMovementScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		UpdateMouseLook();
-		UpdatePlayerMovement();
+		if (!isStuck) {
+			UpdatePlayerMovement();
+		}
 	}
 
 	/// <summary>
@@ -78,17 +89,20 @@ public class PlayerMovementScript : MonoBehaviour {
 		currentDir = Vector2.SmoothDamp(currentDir, targetDir, ref currentDirVelocity, moveSmoothTime);
 
 		if (controller.isGrounded) {
-			//canJump = true;
-			if (Input.GetKey(KeyCode.Space)) {
+			if (Input.GetKey(KeyCode.Space) && currentStamina > 0) {
 				velocityY += jumpHeight;
+				currentStamina--;
+				staminaBar.SetStaminaBar(currentStamina);
 			} else {
-				velocityY = 0.0f;
+				velocityY = 0.1f;
 			}
 
 			// Sprint mechanic
 			// If the player is pressing the run button, then the speed increases, otherwise default speed
-			if (Input.GetKey(KeyCode.LeftShift)) {
+			if (Input.GetKey(KeyCode.LeftShift) && currentStamina > 0) {
 				speed = runSpeed;
+				currentStamina -= 0.01f;
+				staminaBar.SetStaminaBar(currentStamina);
 			} else {
 				speed = defaultSpeed;
 			}
@@ -98,5 +112,27 @@ public class PlayerMovementScript : MonoBehaviour {
 		Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * speed + Vector3.up * velocityY;
 
 		controller.Move(velocity * Time.deltaTime);
+	}
+
+	/// <summary>
+	/// When the player enters a trap, they will become stuck
+	/// </summary>
+	/// <param name="other">Used to see if other object is a trap</param>
+	private void OnTriggerEnter(Collider other) {
+		if (other.tag == "Trap") {
+			healthScript.TakeDamage(15);
+			isStuck = true;
+			StartCoroutine(StuckInTrap());
+		}
+	}
+
+	/// <summary>
+	/// Player is unstuck after 5 seconds
+	/// </summary>
+	/// <returns>Waits 5 seconds before continuing</returns>
+	IEnumerator StuckInTrap() {
+		yield return new WaitForSeconds(5);
+
+		isStuck = false;
 	}
 }

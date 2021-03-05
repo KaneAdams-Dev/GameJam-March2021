@@ -1,19 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This class changes the health and stamina bars to fit the player's health and stamina respectively
+/// </summary>
 public class BarScript : MonoBehaviour {
 	public Slider healthSlider;
 	public Slider staminaSlider;
-
-	// Start is called before the first frame update
-	void Start() {
-
-	}
-
-	// Update is called once per frame
-	void Update() {
-
-	}
 
 	/// <summary>
 	/// Sets the max value for the health bar
@@ -28,7 +21,7 @@ public class BarScript : MonoBehaviour {
 	/// Set the max value for the stamina bar
 	/// </summary>
 	/// <param name="a_stamina">Amount of stamina</param>
-	public void SetMaxStamina(int a_stamina) {
+	public void SetMaxStamina(float a_stamina) {
 		staminaSlider.maxValue = a_stamina;
 		staminaSlider.value = a_stamina;
 	}
@@ -45,7 +38,7 @@ public class BarScript : MonoBehaviour {
 	/// Sets the value for stamina bar currently
 	/// </summary>
 	/// <param name="a_stamina">Amount of stamina</param>
-	public void SetStaminaBar(int a_stamina) {
+	public void SetStaminaBar(float a_stamina) {
 		staminaSlider.value = a_stamina;
 	}
 }

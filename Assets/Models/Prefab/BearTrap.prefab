@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 1715567916388295529}
   - component: {fileID: 7680305672280250719}
   - component: {fileID: 4154962333349012902}
+  - component: {fileID: 1687369489410258200}
   m_Layer: 0
   m_Name: BearTrap
-  m_TagString: Untagged
+  m_TagString: Trap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,3 +78,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &1687369489410258200
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420036323469906298}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 2542369934389946033, guid: 98ef44a10376ed94d98db8fcca29f6be, type: 3}

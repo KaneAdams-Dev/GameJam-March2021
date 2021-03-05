@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
+  - Trap
   layers:
   - Default
   - TransparentFX
